@@ -12,6 +12,16 @@ const firebaseConfig = {
   appId: import.meta.env.VITE_FIREBASE_APP_ID
 };
 
+// Validate that required config is present
+const missingVars = Object.entries(firebaseConfig)
+  .filter(([_, value]) => !value)
+  .map(([key]) => key);
+
+if (missingVars.length > 0) {
+  console.error(`Missing Firebase environment variables: ${missingVars.join(', ')}`);
+  console.error('Check your .env.local file and ensure it contains all VITE_FIREBASE_* variables.');
+}
+
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
