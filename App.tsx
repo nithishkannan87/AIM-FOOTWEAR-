@@ -7,11 +7,13 @@ import { Header } from './components/Header';
 import { Footer } from './components/Footer';
 import { CartSidebar } from './components/CartSidebar';
 import { WishlistSidebar } from './components/WishlistSidebar';
+import { ProtectedRoute } from './components/ProtectedRoute';
 import { Home } from './pages/Home';
 import { Catalog } from './pages/Catalog';
 import { ProductDetails } from './pages/ProductDetails';
 import { CartPage } from './pages/CartPage';
-import { Login } from './pages/Login';
+import { SignIn } from './pages/SignIn';
+import { SignUp } from './pages/SignUp';
 
 // ScrollToTop component
 const ScrollToTop = () => {
@@ -38,8 +40,13 @@ const App: React.FC = () => {
                   <Route path="/" element={<Home />} />
                   <Route path="/catalog" element={<Catalog />} />
                   <Route path="/product/:id" element={<ProductDetails />} />
-                  <Route path="/cart" element={<CartPage />} />
-                  <Route path="/login" element={<Login />} />
+                  <Route path="/cart" element={
+                    <ProtectedRoute>
+                      <CartPage />
+                    </ProtectedRoute>
+                  } />
+                  <Route path="/login" element={<SignIn />} />
+                  <Route path="/signup" element={<SignUp />} />
                 </Routes>
               </main>
               <Footer />

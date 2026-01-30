@@ -1,19 +1,19 @@
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
+import { getFirestore } from "firebase/firestore";
 
-// Your web app's Firebase configuration
+// Firebase configuration using environment variables
 const firebaseConfig = {
-    apiKey: "AIzaSyBcT3QqPZ5EvQIdgSr9OChnM8k8PTTISuA",
-    authDomain: "aim-footwear-2b697.firebaseapp.com",
-    projectId: "aim-footwear-2b697",
-    storageBucket: "aim-footwear-2b697.firebasestorage.app",
-    messagingSenderId: "742439106442",
-    appId: "1:742439106442:web:f284a09764d4bfd494ba73"
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID
 };
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
+export const db = getFirestore(app);
 export default app;

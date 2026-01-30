@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
-import { auth } from '../firebase';
+import { auth, db } from '../firebase';
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
@@ -7,6 +7,7 @@ import {
   onAuthStateChanged,
   updateProfile
 } from 'firebase/auth';
+import { doc, setDoc, getDoc, serverTimestamp } from 'firebase/firestore';
 
 interface User {
   name: string;
@@ -30,13 +31,27 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
+    const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
       if (firebaseUser) {
-        setUser({
-          name: firebaseUser.displayName || firebaseUser.email?.split('@')[0] || 'User',
-          email: firebaseUser.email || '',
-          uid: firebaseUser.uid
-        });
+        // Fetch additional user data from Firestore
+        const userDocRef = doc(db, 'users', firebaseUser.uid);
+        const userDoc = await getDoc(userDocRef);
+
+        if (userDoc.exists()) {
+          const userData = userDoc.data();
+          setUser({
+            name: userData.name || firebaseUser.displayName || firebaseUser.email?.split('@')[0] || 'User',
+            email: firebaseUser.email || '',
+            uid: firebaseUser.uid
+          });
+        } else {
+          // Fallback if no Firestore document exists
+          setUser({
+            name: firebaseUser.displayName || firebaseUser.email?.split('@')[0] || 'User',
+            email: firebaseUser.email || '',
+            uid: firebaseUser.uid
+          });
+        }
       } else {
         setUser(null);
       }
@@ -52,9 +67,21 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
   const signup = async (email: string, password: string, name: string) => {
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+
+    // Update Firebase Auth profile
     await updateProfile(userCredential.user, {
       displayName: name
     });
+
+    // Create user document in Firestore
+    await setDoc(doc(db, 'users', userCredential.user.uid), {
+      name: name,
+      email: email,
+      uid: userCredential.user.uid,
+      createdAt: serverTimestamp(),
+      updatedAt: serverTimestamp()
+    });
+
     // Manually update local state to ensure UI reflects the new name immediately
     setUser({
       name: name,
