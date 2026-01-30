@@ -80,7 +80,7 @@ export const Home: React.FC = () => {
           {[
             { name: "Men's", img: 'https://images.unsplash.com/photo-1605733160314-4fc7dac4bb16?auto=format&fit=crop&q=80&w=600', link: '/catalog?category=Men' },
             { name: "Women's", img: 'https://images.unsplash.com/photo-1543163521-1bf539c55dd2?auto=format&fit=crop&q=80&w=600', link: '/catalog?category=Women' },
-            { name: "Kids'", img: 'https://images.unsplash.com/photo-1503919545889-aef636e10ad4?auto=format&fit=crop&q=80&w=600', link: '/catalog?category=Kids' },
+            { name: "Kids'", img: 'https://images.unsplash.com/photo-1560769629-975ec94e6a86?auto=format&fit=crop&q=80&w=600', link: '/catalog?category=Kids' },
           ].map((cat) => (
             <Link key={cat.name} to={cat.link} className="group relative rounded-xl overflow-hidden aspect-[4/3] shadow-md">
               <img src={cat.img} alt={cat.name} className="w-full h-full object-cover group-hover:scale-110 transition duration-700" />
