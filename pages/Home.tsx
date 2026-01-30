@@ -12,14 +12,14 @@ export const Home: React.FC = () => {
       {/* Hero Banner */}
       <div className="relative bg-gray-900 text-white overflow-hidden">
         <div className="absolute inset-0">
-          <img 
-            src="https://images.unsplash.com/photo-1549298916-b41d501d3772?q=80&w=2012&auto=format&fit=crop" 
-            alt="Shoes Background" 
+          <img
+            src="https://images.unsplash.com/photo-1549298916-b41d501d3772?q=80&w=2012&auto=format&fit=crop"
+            alt="Shoes Background"
             className="w-full h-full object-cover opacity-40"
           />
           <div className="absolute inset-0 bg-gradient-to-r from-gray-900 via-gray-900/80 to-transparent"></div>
         </div>
-        
+
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 md:py-32">
           <div className="max-w-xl">
             <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight mb-4">
@@ -78,9 +78,9 @@ export const Home: React.FC = () => {
         <h2 className="text-2xl font-bold text-gray-900 mb-6">Shop by Category</h2>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
           {[
-            { name: "Men's", img: 'https://images.unsplash.com/photo-1527011046414-4781f1f94f8c?auto=format&fit=crop&q=80&w=600', link: '/catalog?category=Men' },
-            { name: "Women's", img: 'https://images.unsplash.com/photo-1562183241-b937e95585b6?auto=format&fit=crop&q=80&w=600', link: '/catalog?category=Women' },
-            { name: "Kids'", img: 'https://images.unsplash.com/photo-1514989940723-e8875ea01cd7?auto=format&fit=crop&q=80&w=600', link: '/catalog?category=Kids' },
+            { name: "Men's", img: 'https://images.unsplash.com/photo-1605733160314-4fc7dac4bb16?auto=format&fit=crop&q=80&w=600', link: '/catalog?category=Men' },
+            { name: "Women's", img: 'https://images.unsplash.com/photo-1543163521-1bf539c55dd2?auto=format&fit=crop&q=80&w=600', link: '/catalog?category=Women' },
+            { name: "Kids'", img: 'https://images.unsplash.com/photo-1555274175-75f79b09d5b8?auto=format&fit=crop&q=80&w=600', link: '/catalog?category=Kids' },
           ].map((cat) => (
             <Link key={cat.name} to={cat.link} className="group relative rounded-xl overflow-hidden aspect-[4/3] shadow-md">
               <img src={cat.img} alt={cat.name} className="w-full h-full object-cover group-hover:scale-110 transition duration-700" />
@@ -111,21 +111,21 @@ export const Home: React.FC = () => {
           ))}
         </div>
       </div>
-      
+
       {/* Promotional Banner */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="bg-orange-500 rounded-2xl p-8 md:p-12 relative overflow-hidden flex flex-col md:flex-row items-center justify-between">
-            <div className="relative z-10 max-w-lg text-center md:text-left text-white">
-                <h2 className="text-3xl font-bold mb-4">Summer Sale is Live!</h2>
-                <p className="text-orange-100 mb-6 text-lg">Get up to 40% off on Walkaroo slippers and sandals. Limited time offer.</p>
-                <Link to="/catalog?type=Slippers" className="inline-block bg-white text-orange-600 font-bold px-8 py-3 rounded-full hover:bg-gray-100 transition shadow-lg">
-                    Shop Slippers
-                </Link>
-            </div>
-            <div className="relative z-10 mt-8 md:mt-0">
-               {/* Decorative circle or icon could go here */}
-               <div className="w-64 h-64 bg-white/10 rounded-full blur-3xl absolute -top-10 -right-10"></div>
-            </div>
+          <div className="relative z-10 max-w-lg text-center md:text-left text-white">
+            <h2 className="text-3xl font-bold mb-4">Summer Sale is Live!</h2>
+            <p className="text-orange-100 mb-6 text-lg">Get up to 40% off on Walkaroo slippers and sandals. Limited time offer.</p>
+            <Link to="/catalog?type=Slippers" className="inline-block bg-white text-orange-600 font-bold px-8 py-3 rounded-full hover:bg-gray-100 transition shadow-lg">
+              Shop Slippers
+            </Link>
+          </div>
+          <div className="relative z-10 mt-8 md:mt-0">
+            {/* Decorative circle or icon could go here */}
+            <div className="w-64 h-64 bg-white/10 rounded-full blur-3xl absolute -top-10 -right-10"></div>
+          </div>
         </div>
       </div>
     </div>
