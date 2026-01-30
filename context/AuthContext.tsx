@@ -1,48 +1,75 @@
 import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
+import { auth } from '../firebase';
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signOut,
+  onAuthStateChanged,
+  updateProfile
+} from 'firebase/auth';
 
 interface User {
   name: string;
   email: string;
+  uid: string;
 }
 
 interface AuthContextType {
   user: User | null;
-  login: (email: string, name?: string) => void;
-  logout: () => void;
+  login: (email: string, password: string) => Promise<void>;
+  signup: (email: string, password: string, name: string) => Promise<void>;
+  logout: () => Promise<void>;
   isAuthenticated: boolean;
+  loading: boolean;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
 
-  // Check local storage for persisted session
   useEffect(() => {
-    const savedUser = localStorage.getItem('aim-user');
-    if (savedUser) {
-      try {
-        setUser(JSON.parse(savedUser));
-      } catch (e) {
-        console.error("Failed to parse user", e);
+    const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
+      if (firebaseUser) {
+        setUser({
+          name: firebaseUser.displayName || firebaseUser.email?.split('@')[0] || 'User',
+          email: firebaseUser.email || '',
+          uid: firebaseUser.uid
+        });
+      } else {
+        setUser(null);
       }
-    }
+      setLoading(false);
+    });
+
+    return unsubscribe;
   }, []);
 
-  const login = (email: string, name: string = 'Walkaroo Fan') => {
-    const newUser = { name, email };
-    setUser(newUser);
-    localStorage.setItem('aim-user', JSON.stringify(newUser));
+  const login = async (email: string, password: string) => {
+    await signInWithEmailAndPassword(auth, email, password);
   };
 
-  const logout = () => {
-    setUser(null);
-    localStorage.removeItem('aim-user');
+  const signup = async (email: string, password: string, name: string) => {
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+    await updateProfile(userCredential.user, {
+      displayName: name
+    });
+    // Manually update local state to ensure UI reflects the new name immediately
+    setUser({
+      name: name,
+      email: email,
+      uid: userCredential.user.uid
+    });
+  };
+
+  const logout = async () => {
+    await signOut(auth);
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, isAuthenticated: !!user }}>
-      {children}
+    <AuthContext.Provider value={{ user, login, signup, logout, isAuthenticated: !!user, loading }}>
+      {!loading && children}
     </AuthContext.Provider>
   );
 };

@@ -10,20 +10,27 @@ export const Login: React.FC = () => {
   const [name, setName] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  
-  const { login } = useAuth();
+
+  const { login, signup } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    
-    // Simulate API call delay
-    setTimeout(() => {
-      login(email, isLogin ? undefined : name);
-      setIsLoading(false);
+
+    try {
+      if (isLogin) {
+        await login(email, password);
+      } else {
+        await signup(email, password, name);
+      }
       navigate('/');
-    }, 1500);
+    } catch (error: any) {
+      console.error(error);
+      alert(error.message || 'Failed to authenticate');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -31,27 +38,27 @@ export const Login: React.FC = () => {
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <div className="text-center flex flex-col items-center">
           <Link to="/" className="inline-flex flex-col items-center">
-             <div className="text-blue-900 mb-1">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="w-10 h-10">
-                    <path d="M4 16v-5.5a2.5 2.5 0 0 1 2.5-2.5h2l2-3h3a2 2 0 0 1 2 2v2.5" />
-                    <path d="M4 16h14.5a2.5 2.5 0 0 0 2.5-2.5V11" />
-                    <path d="M9 16V8" />
-                    <path d="M13 12H9" />
-                    <path d="M14 9h-2" />
-                    <path d="M2 12h2" />
-                    <path d="M2 15h2" />
-                </svg>
-             </div>
-             <span className="text-3xl font-serif font-bold tracking-wider text-blue-900 leading-none">AIM</span>
-             <span className="text-[0.7rem] font-sans font-bold tracking-[0.3em] text-blue-900 leading-none mt-1">FOOTWEAR</span>
+            <div className="text-blue-900 mb-1">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="w-10 h-10">
+                <path d="M4 16v-5.5a2.5 2.5 0 0 1 2.5-2.5h2l2-3h3a2 2 0 0 1 2 2v2.5" />
+                <path d="M4 16h14.5a2.5 2.5 0 0 0 2.5-2.5V11" />
+                <path d="M9 16V8" />
+                <path d="M13 12H9" />
+                <path d="M14 9h-2" />
+                <path d="M2 12h2" />
+                <path d="M2 15h2" />
+              </svg>
+            </div>
+            <span className="text-3xl font-serif font-bold tracking-wider text-blue-900 leading-none">AIM</span>
+            <span className="text-[0.7rem] font-sans font-bold tracking-[0.3em] text-blue-900 leading-none mt-1">FOOTWEAR</span>
           </Link>
           <h2 className="mt-8 text-3xl font-bold tracking-tight text-gray-900">
             {isLogin ? 'Sign in to your account' : 'Create your account'}
           </h2>
           <p className="mt-2 text-sm text-gray-600">
             Or{' '}
-            <button 
-              onClick={() => setIsLogin(!isLogin)} 
+            <button
+              onClick={() => setIsLogin(!isLogin)}
               className="font-medium text-blue-600 hover:text-blue-500"
             >
               {isLogin ? 'register a new account' : 'sign in to your existing account'}
