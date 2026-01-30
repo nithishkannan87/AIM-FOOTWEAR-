@@ -10,29 +10,30 @@ export const Home: React.FC = () => {
   return (
     <div className="space-y-12 pb-12">
       {/* Hero Banner */}
-      <div className="relative bg-gray-900 text-white overflow-hidden">
+      <div className="relative bg-gray-50 overflow-hidden">
         <div className="absolute inset-0">
           <img
             src="https://images.unsplash.com/photo-1556906781-9a412961c28c?q=80&w=2000&auto=format&fit=crop"
             alt="Footwear Collection"
-            className="w-full h-full object-cover opacity-40"
+            className="w-full h-full object-cover"
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-gray-900 via-gray-900/80 to-transparent"></div>
+          {/* Subtle white gradient for text readability if needed, or remove completely */}
+          <div className="absolute inset-0 bg-gradient-to-r from-white/90 via-white/50 to-transparent"></div>
         </div>
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 md:py-32">
           <div className="max-w-xl">
-            <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight mb-4">
-              Step into Comfort with <span className="text-orange-500">Walkaroo</span>
+            <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight mb-4 text-gray-900">
+              Step into Comfort with <span className="text-orange-600">Walkaroo</span>
             </h1>
-            <p className="text-lg text-gray-300 mb-8">
+            <p className="text-lg text-gray-700 mb-8 font-medium">
               Discover the latest collection of durable, stylish sneakers and slippers for the whole family.
             </p>
             <div className="flex space-x-4">
               <Link to="/catalog" className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 transition">
                 Shop Now
               </Link>
-              <Link to="/catalog?category=Men" className="inline-flex items-center px-6 py-3 border border-gray-300 text-base font-medium rounded-md text-white hover:bg-white/10 transition">
+              <Link to="/catalog?category=Men" className="inline-flex items-center px-6 py-3 border border-gray-300 text-base font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 transition shadow-sm">
                 Men's Collection
               </Link>
             </div>
